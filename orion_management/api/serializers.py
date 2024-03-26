@@ -24,9 +24,9 @@ class CountrySerializer(BaseUrlMixin, serializers.ModelSerializer):
         
 class AddressSerializer(BaseUrlMixin, serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
-    state = StateSerializer()
-    city = CitySerializer()
-    country = CountrySerializer()
+    state = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all())
+    city = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all())
+    country = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all())
 
     class Meta:
         model = Address
@@ -42,7 +42,7 @@ class BranchSerializer(BaseUrlMixin, serializers.ModelSerializer):
         
 class ClientSerializer(BaseUrlMixin, serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
-    addresses = AddressSerializer(many=True)
+    addresses = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all(), many=True)
     cell_phone = serializers.CharField(source='cell_phone.as_e164')
     work_phone = serializers.CharField(source='work_phone.as_e164')
     
@@ -52,8 +52,8 @@ class ClientSerializer(BaseUrlMixin, serializers.ModelSerializer):
 
 class OrganizationSerializer(BaseUrlMixin, serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
-    clients = ClientSerializer(many=True)
-    branches = BranchSerializer(many=True)
+    clients = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), many=True)
+    branches = serializers.PrimaryKeyRelatedField(queryset=Branch.objects.all(), many=True)
 
     class Meta:
         model = Organization
