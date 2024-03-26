@@ -20,6 +20,7 @@ setuptools = "*"
 django-filter = "*"
 django-phonenumber-field = "*"
 faker = "*"
+phonenumbers = "*"
 
 [dev-packages]
 
