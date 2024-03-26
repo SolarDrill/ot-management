@@ -43,8 +43,7 @@ This is an application built using Python/Django from scratch with the default s
    ```
    
 ## REMINDER
-Check .env.example to know which .envs are needed and the format of the DB URL
-In addition, there's the possibility to set a Sentry_DNS to keep track of any issue that might occur
+Check .env.example to know which .envs are needed and the format of the DB URL. In addition, there's the possibility to set a Sentry_DNS to keep track of any issue that might occur
 
 
 
