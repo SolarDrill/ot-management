@@ -1,6 +1,5 @@
 from config.abstract_models import CommonInfo
 from .utils import validate_phone_number, validate_email_format
-from django.urls import reverse
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -12,9 +11,7 @@ class State(CommonInfo):
     class Meta:
         verbose_name = "State"
         verbose_name_plural = "States"
-    
-    def get_absolute_url(self):
-        return reverse('api:state-detail', kwargs={'pk': self.pk})
+
 class City(CommonInfo):
     
     def __str__(self):
@@ -22,9 +19,6 @@ class City(CommonInfo):
     class Meta:
         verbose_name = "City"
         verbose_name_plural = "Cities"
-
-    def get_absolute_url(self):
-        return reverse('api:city-detail', kwargs={'pk': self.pk})
 
 class Country(CommonInfo):
     
@@ -34,9 +28,7 @@ class Country(CommonInfo):
     class Meta:
         verbose_name = "Country"
         verbose_name_plural = "Countries"
-
-    def get_absolute_url(self):
-        return reverse('api:country-detail', kwargs={'pk': self.pk})
+        
 class Address(CommonInfo):
     street = models.CharField(max_length=100, blank=True, null=True)
     state = models.ForeignKey(State, on_delete=models.CASCADE, max_length=100)
@@ -50,9 +42,7 @@ class Address(CommonInfo):
     class Meta:
         verbose_name = "Address"
         verbose_name_plural = "Addresses"
-        
-    def get_absolute_url(self):
-        return reverse('api:address-detail', kwargs={'pk': self.pk})    
+           
 class Branch(CommonInfo):
     address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True)
     
@@ -63,8 +53,6 @@ class Branch(CommonInfo):
         verbose_name = "Branch"
         verbose_name_plural = "Branches"
         
-    def get_absolute_url(self):
-        return reverse('api:branch-detail', kwargs={'pk': self.pk})
 
 class Client(CommonInfo):
     cell_phone = PhoneNumberField(validators=[validate_phone_number])
@@ -78,8 +66,6 @@ class Client(CommonInfo):
         verbose_name = "Client"
         verbose_name_plural = "Clients"
         
-    def get_absolute_url(self):
-        return reverse('api:client-detail', kwargs={'pk': self.pk})
 
 class Organization(CommonInfo):
     clients = models.ManyToManyField(Client, blank=True)
@@ -91,6 +77,4 @@ class Organization(CommonInfo):
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
 
-    def get_absolute_url(self):
-        return reverse('api:organization-detail', kwargs={'pk': self.pk})
     
