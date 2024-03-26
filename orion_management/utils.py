@@ -15,3 +15,10 @@ def validate_email_format(value):
         validate_email(value)
     except ValidationError:
         raise ValidationError("Invalid email format")
+    
+class BaseUrlMixin:
+    def get_url(self, obj):
+        request = self.context.get('request')
+        if request is not None:
+            return request.build_absolute_uri(obj.get_absolute_url())
+        return ''

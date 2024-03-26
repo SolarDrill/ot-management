@@ -8,13 +8,13 @@ if settings.DEBUG:
 else:
     router = SimpleRouter()
 
-router.register(r"state", StateViewSet)
-router.register(r"city", CityViewSet)
-router.register(r"country", CountryViewSet)
-router.register(r"address", AddressViewSet)
-router.register(r"branch", BranchViewSet)
-router.register(r"client", ClientViewSet)
-router.register(r"organization", OrganizationViewSet)
+router.register(r"state", StateViewSet, basename='state')
+router.register(r"city", CityViewSet, basename='city')
+router.register(r"country", CountryViewSet, basename='country')
+router.register(r"address", AddressViewSet, basename='address')
+router.register(r"branch", BranchViewSet, basename='branch')
+router.register(r"client", ClientViewSet, basename='client')
+router.register(r"organization", OrganizationViewSet, basename='organization')
 
 app_name = "api"
 urlpatterns = router.urls

@@ -31,11 +31,12 @@ cities = City.objects.all()
 
 # Populate addresses
 for _ in range(10):
+    name = fake.name()
     country = random.choice(countries)
     state = random.choice(states)
     city = random.choice(cities)
     street_address = fake.street_address()
-    Address.objects.create(street=street_address, country=country, state=state, city=city)
+    Address.objects.create(street=street_address, country=country, state=state, city=city, name=name)
 
 # Populate branches
 for _ in range(5):

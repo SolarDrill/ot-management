@@ -1,56 +1,60 @@
 from rest_framework import serializers
 from django.urls import reverse
+from ..utils import BaseUrlMixin
 from ..models import State, City, Country, Address, Client, Branch, Organization
 
-class StateSerializer(serializers.ModelSerializer):
+class StateSerializer(BaseUrlMixin, serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = State
-        fields = ('id','name','description','created','modified', 'active')
+        fields = ('id', 'url', 'name')
         
-class CitySerializer(serializers.ModelSerializer):
-
+class CitySerializer(BaseUrlMixin, serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
     class Meta:
         model = City
-        fields = ('id','name','description','created','modified', 'active')
+        fields = ('id', 'url', 'name')
 
-class CountrySerializer(serializers.ModelSerializer):
-
+class CountrySerializer(BaseUrlMixin, serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
     class Meta:
         model = Country
-        fields = ('id','name','description','created','modified', 'active')
+        fields = ('id', 'url', 'name')
         
-class AddressSerializer(serializers.ModelSerializer):
-    state = serializers.PrimaryKeyRelatedField(queryset=State.objects.all())
-    city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
-    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
+class AddressSerializer(BaseUrlMixin, serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    state = StateSerializer()
+    city = CitySerializer()
+    country = CountrySerializer()
 
     class Meta:
         model = Address
-        fields = ('id','name', 'street', 'state', 'city', 'country', 'description','created','modified', 'active')
+        fields = ('id', 'url', 'name', 'street', 'state', 'city', 'country')
         
-class BranchSerializer(serializers.ModelSerializer):
-    address = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all())
+class BranchSerializer(BaseUrlMixin, serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    address = AddressSerializer()
 
     class Meta:
-        model = Address
-        fields = ('id','name', 'address', 'description','created','modified', 'active')
+        model = Branch
+        fields = ('id', 'url', 'name', 'address')
         
-        
-class ClientSerializer(serializers.ModelSerializer):
-    addresses = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all(), many=True)
+class ClientSerializer(BaseUrlMixin, serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    addresses = AddressSerializer(many=True)
     cell_phone = serializers.CharField(source='cell_phone.as_e164')
     work_phone = serializers.CharField(source='work_phone.as_e164')
     
     class Meta:
         model = Client
-        fields = ('id','name', 'birth_date', 'addresses', 'cell_phone', 'work_phone', 'email', 'description','created','modified', 'active')
-        
-        
-class OrganizationSerializer(serializers.ModelSerializer):
-    clients = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all(), many=True)
-    branches = serializers.PrimaryKeyRelatedField(queryset=Branch.objects.all(), many=True)
+        fields = ('id', 'url', 'name', 'birth_date', 'addresses', 'cell_phone', 'work_phone', 'email')
+
+class OrganizationSerializer(BaseUrlMixin, serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    clients = ClientSerializer(many=True)
+    branches = BranchSerializer(many=True)
 
     class Meta:
         model = Organization
-        fields = ('id','name', 'branches', 'clients', 'description','created','modified', 'active')
+        fields = ('id', 'url', 'name', 'branches', 'clients')
