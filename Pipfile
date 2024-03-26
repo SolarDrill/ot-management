@@ -10,6 +10,16 @@ django-environ = "*"
 sentry-sdk = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
+djangorestframework-simplejwt = "*"
+drf-yasg = "*"
+drf-spectacular = "*"
+django-admin-interface = "*"
+django-model-utils = "*"
+django-multiselectfield = "*"
+setuptools = "*"
+django-filter = "*"
+django-phonenumber-field = "*"
+faker = "*"
 
 [dev-packages]
 

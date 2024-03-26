@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "TRUE"
+DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = ['*']
 
@@ -38,6 +38,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_interface',
+    'colorfield',
     #Django Default Apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +47,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #External Packages
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_yasg',
+    'drf_spectacular',
+    'phonenumber_field',
     #Internal Apps
     'orion_management',
 ]
@@ -83,10 +91,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Disable ATOMIC_REQUESTS at the database level, not in the DATABASES dictionary
+
 DATABASES = {
     'default': env.db('DATABASE_URL'),
 }
 
+
+# Documentation
+SWAGGER_SETTINGS = {
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
+    'DEFAULT_INFO': 'config.urls.swagger_info',  # Reference to your API's info dictionary
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -128,6 +144,29 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.BasicAuthentication',
+                                        'rest_framework.authentication.SessionAuthentication',
+                                       'rest_framework_simplejwt.authentication.JWTAuthentication'),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+
+SPECTACULAR_SETTINGS = {
+    "Title": "Orion Management",
+    "DESCRIPTION": "Documentation of API endpoints of Orion Management System",
+    "VERSION": "1.0.0",
+    # "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
+}
 
 # Monitor Config
 sentry_sdk.init(
