@@ -34,7 +34,8 @@ This is an application built using Python/Django from scratch with the default s
    python manage.py runserver
    ```
 ### Description
-   This is a Back-End REST API using DRF to manage Clients and Organizations, where multiple Clients can belong to an Organization, a Client could have multiple addresses and an Organization X number of Branches
+   This is a Back-End REST API using DRF to manage Clients and Organizations, where multiple Clients can belong to an Organization, a Client could have multiple addresses and an Organization X number of Branches.
+   
    Url for the API documentation: http://127.0.0.1:8000/api/v1/docs/
    
 ### How to run Unit Tests
@@ -43,7 +44,9 @@ This is an application built using Python/Django from scratch with the default s
    ```
    
 ## REMINDER
-Check .env.example to know which .envs are needed and the format of the DB URL. In addition, there's the possibility to set a Sentry_DNS to keep track of any issue that might occur
+Check .env.example to know which .envs are needed and the format of the DB URL.   
+
+In addition, there's the possibility to set a Sentry_DNS to keep track of any issue that might occur
 
 
 
